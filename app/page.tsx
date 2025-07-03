@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Header from "@/components/header"
 import PlanSelection from "@/components/plan-selection"
 import AddOns from "@/components/add-ons"
@@ -19,9 +19,28 @@ export default function SmartFitCheckoutPage() {
   const [totalAddOnsValue, setTotalAddOnsValue] = useState(0)
   const [adhesionFee, setAdhesionFee] = useState(0)
 
+  // Track page views for smartpromojulho.com
+  useEffect(() => {
+    // Add Google Analytics or other tracking here
+    if (typeof window !== "undefined") {
+      // Track page view
+      console.log("Page viewed on smartpromojulho.com")
+
+      // Set page title dynamically
+      document.title =
+        step === "plans"
+          ? "Smart Fit - Escolha seu Plano | Promoção Julho 2024"
+          : "Smart Fit - Finalize sua Adesão | Promoção Julho 2024"
+    }
+  }, [step])
+
   const handleContinue = () => {
     if (selectedPlan) {
       setStep("data")
+      // Track conversion event
+      if (typeof window !== "undefined") {
+        console.log("User proceeded to data step", { plan: selectedPlan })
+      }
     }
   }
 
@@ -41,6 +60,11 @@ export default function SmartFitCheckoutPage() {
   const handlePlanSelect = (planType: "fit" | "black", adhesionFee: number) => {
     setSelectedPlan(planType)
     setAdhesionFee(adhesionFee)
+
+    // Track plan selection
+    if (typeof window !== "undefined") {
+      console.log("Plan selected on smartpromojulho.com", { plan: planType, adhesionFee })
+    }
   }
 
   if (step === "plans") {
@@ -53,6 +77,11 @@ export default function SmartFitCheckoutPage() {
               Venha treinar na maior rede de academias da América Latina
             </h1>
             <p className="text-muted-foreground mt-2">Selecione um plano para continuar</p>
+            <div className="mt-4 p-3 bg-yellow-100 rounded-lg border-l-4 border-yellow-500">
+              <p className="text-sm font-semibold text-yellow-800">
+                🔥 PROMOÇÃO EXCLUSIVA JULHO 2024 - Oferta válida apenas em smartpromojulho.com
+              </p>
+            </div>
           </div>
           <PlanSelection
             selectedPlan={selectedPlan}
@@ -84,6 +113,11 @@ export default function SmartFitCheckoutPage() {
           <div className="text-center mb-8">
             <h1 className="text-2xl md:text-3xl font-bold">Falta pouco!</h1>
             <p className="text-muted-foreground mt-2">Preencha seus dados e finalize a sua adesão.</p>
+            <div className="mt-4 p-3 bg-green-100 rounded-lg border-l-4 border-green-500">
+              <p className="text-sm font-semibold text-green-800">
+                ✅ Você está garantindo a promoção exclusiva de julho!
+              </p>
+            </div>
           </div>
           <ProgressStepper currentStep={2} />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
